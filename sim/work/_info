@@ -1,0 +1,337 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 de:/mp3_decoder_verilog/sim
+vAlais
+Z1 !s110 1609469896
+!i10b 1
+!s100 GkkbQWY`Nf`O6nB73D0Th1
+I2jHV?ioJUn]5f[lN0YGfT0
+Z2 VDg1SIo80bB@j0V0VzS_@n1
+R0
+w1236595282
+8../rtl/Alais.v
+F../rtl/Alais.v
+L0 14
+Z3 OL;L;10.6e;65
+r1
+!s85 0
+31
+Z4 !s108 1609469896.000000
+!s107 ..\rtl\timescale.v|../rtl/write_i2s_fifo.v|../rtl/timescale.v|../rtl/synchronize.v|../rtl/Stereo.v|../rtl/requatize.v|../rtl/Ram.v|../rtl/Multiplier.v|../rtl/mp3_rom.v|../rtl/Mp3Decoder.v|../rtl/Memorysel.v|../rtl/Imdct.v|../rtl/huffmandecoder.v|../rtl/Filterbank.v|../rtl/Controll.v|../rtl/Alais.v|./mp3dec_tb.sv|
+Z5 !s90 -reportprogress|300|-f|list.txt|
+!i113 1
+Z6 o-L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+Z7 tCvgOpt 0
+n@alais
+vControll
+R1
+!i10b 1
+!s100 a941fX_9_V1`VOmZKCVB33
+IRQHDz8L?aRYdnH[0m>CeK2
+R2
+R0
+w1236595292
+8../rtl/Controll.v
+F../rtl/Controll.v
+L0 21
+R3
+r1
+!s85 0
+31
+R4
+Z8 !s107 ..\rtl\timescale.v|../rtl/write_i2s_fifo.v|../rtl/timescale.v|../rtl/synchronize.v|../rtl/Stereo.v|../rtl/requatize.v|../rtl/Ram.v|../rtl/Multiplier.v|../rtl/mp3_rom.v|../rtl/Mp3Decoder.v|../rtl/Memorysel.v|../rtl/Imdct.v|../rtl/huffmandecoder.v|../rtl/Filterbank.v|../rtl/Controll.v|../rtl/Alais.v|./mp3dec_tb.sv|
+R5
+!i113 1
+R6
+R7
+n@controll
+vFilterbank
+R1
+!i10b 1
+!s100 m`<^cA9]b<hnTLNcPa9b82
+I5DY@3@LZnbf`oK29Zoe7H1
+R2
+R0
+w1236595300
+8../rtl/Filterbank.v
+F../rtl/Filterbank.v
+L0 22
+R3
+r1
+!s85 0
+31
+R4
+R8
+R5
+!i113 1
+R6
+R7
+n@filterbank
+vhuffmandecoder
+R1
+!i10b 1
+!s100 e0>aDGRf]?[<AUBWCFg=k1
+IWgJNjiUj<[R[OIH]Njf^B0
+R2
+R0
+w1236595308
+8../rtl/huffmandecoder.v
+F../rtl/huffmandecoder.v
+Z9 L0 18
+R3
+r1
+!s85 0
+31
+R4
+R8
+R5
+!i113 1
+R6
+R7
+vImdct
+R1
+!i10b 1
+!s100 ^1ImEhlQPQ2]>b=?hdXBE1
+IZeb5jhkDG7j2jGH95>Nn62
+R2
+R0
+w1236595270
+8../rtl/Imdct.v
+F../rtl/Imdct.v
+R9
+R3
+r1
+!s85 0
+31
+R4
+R8
+R5
+!i113 1
+R6
+R7
+n@imdct
+vMemorysel
+R1
+!i10b 1
+!s100 bSR=9T?]7T7;i`7I]Kki`3
+ICbHi6^P<8Sf?D<LUVj^9:2
+R2
+R0
+w1236595318
+8../rtl/Memorysel.v
+F../rtl/Memorysel.v
+L0 19
+R3
+r1
+!s85 0
+31
+R4
+R8
+R5
+!i113 1
+R6
+R7
+n@memorysel
+vmp3_rom
+R1
+!i10b 1
+!s100 =ozJVRm^2RO4Ti[i:f8351
+I^SUT;ASgeR2Z0]8glm6Zo0
+R2
+R0
+w1207730062
+8../rtl/mp3_rom.v
+F../rtl/mp3_rom.v
+L0 2
+R3
+r1
+!s85 0
+31
+R4
+R8
+R5
+!i113 1
+R6
+R7
+vmp3dec_tb
+DXx6 sv_std 3 std 0 22 AD7iAPLo6nTIKk<N0eo=D3
+R1
+!i10b 1
+!s100 Q8Uo?PKbalVN4B48C8UOO2
+ISX>BG=^CE9kFgm155XUcR2
+R2
+!s105 mp3dec_tb_sv_unit
+S1
+R0
+w1609469888
+8./mp3dec_tb.sv
+F./mp3dec_tb.sv
+L0 3
+R3
+r1
+!s85 0
+31
+R4
+R8
+R5
+!i113 1
+R6
+R7
+vMp3Decode
+R1
+!i10b 1
+!s100 R39cM?F_?AjfD0l1FKB813
+I^WXZ>elcl6zVJ2e8gVNi73
+R2
+R0
+w1236595342
+8../rtl/Mp3Decoder.v
+F../rtl/Mp3Decoder.v
+Z10 L0 16
+R3
+r1
+!s85 0
+31
+R4
+R8
+R5
+!i113 1
+R6
+R7
+n@mp3@decode
+vMultiplier
+R1
+!i10b 1
+!s100 3NzAl:R;CNYfAVAh=KXR^3
+Ih2hf3LT[Midn`DGIl4BAQ0
+R2
+R0
+w1192871970
+8../rtl/Multiplier.v
+F../rtl/Multiplier.v
+L0 4
+R3
+r1
+!s85 0
+31
+R4
+R8
+R5
+!i113 1
+R6
+R7
+n@multiplier
+vRam
+R1
+!i10b 1
+!s100 WMni3f^2i:aB2gJN>jTX12
+IRnhH1>Jo2Tm6XUK]`MRic2
+R2
+R0
+w1193065658
+8../rtl/Ram.v
+F../rtl/Ram.v
+L0 4
+R3
+r1
+!s85 0
+31
+R4
+R8
+R5
+!i113 1
+R6
+R7
+n@ram
+vrequatize
+R1
+!i10b 1
+!s100 N?Lg00H`kniY]WUNKaP_h0
+Icc=0OF<7M>T[SC:33MKGi1
+R2
+R0
+w1236595356
+8../rtl/requatize.v
+F../rtl/requatize.v
+Z11 L0 17
+R3
+r1
+!s85 0
+31
+R4
+R8
+R5
+!i113 1
+R6
+R7
+vStereo
+R1
+!i10b 1
+!s100 <lBI:IKJMQNie]8g8>l_H3
+ITFk]SD<3[I10TAoS]H^BP1
+R2
+R0
+w1236595364
+8../rtl/Stereo.v
+F../rtl/Stereo.v
+R10
+R3
+r1
+!s85 0
+31
+R4
+R8
+R5
+!i113 1
+R6
+R7
+n@stereo
+vsynchronize
+R1
+!i10b 1
+!s100 D@:ZZb;ECZ[i0jai4:4[m2
+I2E?ZC>J]A:zBTgghEi:b<2
+R2
+R0
+w1609390501
+8../rtl/synchronize.v
+F../rtl/synchronize.v
+L0 15
+R3
+r1
+!s85 0
+31
+R4
+R8
+R5
+!i113 1
+R6
+R7
+vwrite_i2s_fifo
+R1
+!i10b 1
+!s100 =DFYGoSoh9PWg0FE[3ij:2
+IMJQNaRi;z2;imFbC?25E92
+R2
+R0
+w1236595388
+8../rtl/write_i2s_fifo.v
+F../rtl/write_i2s_fifo.v
+R11
+R3
+r1
+!s85 0
+31
+R4
+R8
+R5
+!i113 1
+R6
+R7
