@@ -98,22 +98,46 @@ begin
 	if (!HRESETn) begin
 		st<=`S_NORMAL;
 		HREADYOUT<=1'b0;
+		MP3_DEC_RST<=1'b0;
+		cnt0<=0;
 	end else begin
-		if (ahb_active) begin
-			if (HWRITE) begin
-				case (HADDR[7:0])
-				`MP3_DEC_RST:begin
-					HREADYOUT<=1'b0;
-					st<=WR_MP3_DEC_RST;
-				end
-				default:begin
-					HREADYOUT<=1'b1;
-					st<=`S_NORMAL;
-				end
-			end else begin
-				case (HADDR[7:0])
-				
+		case (st)
+		`S_NORMAL:begin
+			if (ahb_active) begin
+				if (HWRITE) begin
+					case (HADDR[7:0])
+					`MP3DEC_RST:begin
+						HREADYOUT<=1'b0;
+						st<=S_WR_MP3_DEC_RST_0;
+					end
+					default:begin
+						HREADYOUT<=1'b1;
+						st<=`S_NORMAL;
+					end
+					endcase // HADDR[7:0]
+				end else begin
+					case (HADDR[7:0])
+
 			end
+		end
+		`S_WR_MP3_DEC_RST_0:begin
+			HREADYOUT<=1'b0;
+			MP3_DEC_RST<=HWDATA[0];
+			if (HWDATA[0]==1'b0) begin
+				cnt0<=0;
+				st<=`WR_MP3_DEC_RST_1;
+			end else begin
+				st<=`WR_MP3_DEC_RST_2;
+			end
+		end
+		`S_WR_MP3_DEC_RST_1:begin
+			cnt0<=cnt0+1'b1;
+			if (cnt0==RST_CYCLE_NUM) begin st<=`S_NORMAL;HREADYOUT<=1'b1;end 
+			else begin st<=S_WR_MP3_DEC_RST_1;HREADYOUT<=1'b0;end
+		end
+		`S_WR_MP3_DEC_RST_2:begin
+			if ((!ififo_wrrst_busy)&&(!ofifo_rdrst_busy)) begin st<=`S_NORMAL;HREADYOUT<=1'b1;end 
+			else begin st<=S_WR_MP3_DEC_RST_2;HREADYOUT<=1'b0;end
 		end
 	end
 end

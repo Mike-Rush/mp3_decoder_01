@@ -1,0 +1,1 @@
+`define RST_CYCLE_NUM 5
