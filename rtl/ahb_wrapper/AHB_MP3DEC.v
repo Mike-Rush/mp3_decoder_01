@@ -20,7 +20,8 @@ reg [2:0] st,st_t;
 reg HWRITE_t,HREADYOUT_t,ahb_active_t;
 reg reg_MP3DEC_EN,MP3DEC_EN_t,MP3DEC_EN_CLK_DEC;
 reg reg_MP3DEC_RST;
-wire [31:0] reg_MP3DEC_FIFOCNT;
+reg [15:0] reg_IFIFO_LTH,reg_IFIFO_MTH;
+reg [15:0] reg_OFIFO_LTH,reg_OFIFO_MTH;
 wire ahb_active=HTRANS[1]&&HSEL&&HREADY;
 assign HRESP=1'b0;
 wire [31:0] ififo_din,ififo_dout;
@@ -124,7 +125,7 @@ begin
 					`MP3DEC_FIFOCNT:begin HRDATA_sm<={6'b0,ififo_rd_dcnt,6'b0,ofifo_wr_dcnt};HREADYOUT<=1'b1;end
 					`MP3DEC_FIFOSTA:begin HRDATA_sm<={30'b0,ififo_almost_full,ofifo_almost_empty};end
 					`MP3DEC_INTTH0:begin end
-					
+
 					default:begin
 						HREADYOUT<=1'b1;
 						HRDATA_sm<=0;
