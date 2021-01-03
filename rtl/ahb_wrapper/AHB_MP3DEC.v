@@ -84,7 +84,7 @@ Mp3Decode Mp3Decode_u0(
 	.Invalid_format(),
 	.Wfull         (ofifo_wrrst_busy||ofifo_almost_full),
 	.Winc          (ofifo_wr_en),
-	.Wdata         (Wdata)
+	.Wdata         (ofifo_din)
 );
 //bit cross domain
 always @(MP3DEC_CLK)
@@ -111,6 +111,8 @@ begin
 					st<=`S_NORMAL;
 				end
 			end else begin
+				case (HADDR[7:0])
+				
 			end
 		end
 	end
