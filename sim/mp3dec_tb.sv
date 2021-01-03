@@ -1,5 +1,5 @@
 `include "../rtl/timescale.v"
-`define p_clk 10
+`define p_clk 4
 module mp3dec_tb;
 parameter N=20;
 integer i;
@@ -41,7 +41,7 @@ initial begin
 	end
 end
 initial begin
-	fmp3=$fopen("./done_t01.mp3","rb");
+	fmp3=$fopen("./t01.mp3","rb");
 	$fseek(fmp3,0,2);
 	framecnt0=0;framecnt=0;
 	mp3_size=$ftell(fmp3);
@@ -53,12 +53,12 @@ initial begin
 		$display("mp3memory[%0d]=%08x",i,mp3memory[i]);
 	end
 	Rst=0;fifo_empty=1'b1;Enable=1'b0;Wfull=1'b1;
-	#(`p_clk*30.5);
+	#(`p_clk*30);
 	Rst=1;fifo_empty=1'b0;Enable=1'b1;
 	mem_ptr=0;fifo_datain=mp3memory[mem_ptr];
 	Wfull=1'b0;
-	#(`p_clk*0.5);
-	fpcm=$fopen("./out.pcm","wb");
+	#(`p_clk*2);
+	fpcm=$fopen("./t01.pcm","wb");
 	forever begin
 		@(posedge Clk)
 		if (Rst) begin
@@ -81,6 +81,10 @@ always @(posedge Mp3Decode_u0.Done_i2s) begin
 		framecnt=framecnt0/2;
 		$display("Frame %0d End",framecnt);
 		$display("Progress=%f%%",mem_ptr*100.0/(mp3_size/4.0));
+	end
+	if (framecnt==5000) begin
+		#(`p_clk*20000);
+		$stop;
 	end
 end
 always @(posedge Winc) begin
