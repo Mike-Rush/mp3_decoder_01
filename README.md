@@ -13,6 +13,8 @@ You can use Adobe Audition to listen to the PCM file(16bit,2 Channels,Big-Endian
 
 ## Some thing about AHB Wrapper
 
+It used FIFO IP from Vivado 2019.1 .
+
 ### Structure
 
 
@@ -92,8 +94,21 @@ You can use Adobe Audition to listen to the PCM file(16bit,2 Channels,Big-Endian
 | Bit  | R/W  | Description              |
 | ---- | ---- | ------------------------ |
 | 31:6 | -    | reserved                 |
-| 5:0  |      | write to clear interrupt |
+| 5:0  | W    | write to clear interrupt |
 
+#### MP3DEC_INTMSK
+
+| Bit  | R/W  | Description    |
+| ---- | ---- | -------------- |
+| 31:6 | -    | reserved       |
+| 5:0  | RW   | interrupt mask |
+
+#### MP3DEC_FIFO
+
+| Bit   | R/W  | Description                                             |
+| ----- | ---- | ------------------------------------------------------- |
+| 31:16 | -    | reserved                                                |
+| 15:0  | RW   | R:read data from output FIFO<br>W:write data to input fifo |
 
 
 ### Programmer's Model
