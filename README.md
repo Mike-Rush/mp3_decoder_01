@@ -11,7 +11,7 @@ Output file=./sim/t01.pcm
 Sim Script=./sim/sim0.do or ./sim/sim0_nowave.do   
 You can use Adobe Audition to listen to the PCM file(16bit,2 Channels,Big-Endian)
 
-## Something about AHB Wrapper
+## AHB Wrapper
 
 It used FIFO IP from Vivado 2019.1 .
 
@@ -25,8 +25,8 @@ It used FIFO IP from Vivado 2019.1 .
 | ----------------- | -------- | -------------- | ------------------------------------------------------ |
 | 0x00              | Register | MP3DEC_EN      | mp3 decoder enable(high active)                        |
 | 0x04              | Register | MP3DEC_RST     | module reset(low active)                               |
-| 0x08              | Register | MP3DEC_FIFOCNT | FIFO data count (in AHB clock domain)                  |
-| 0x0C              | Register | MP3DEC_FIFOSTA | FIFO status (In AHB clock domain)                      |
+| 0x08              | Register | MP3DEC_FIFOCNT | FIFO data count (HCLK domain)                          |
+| 0x0C              | Register | MP3DEC_FIFOSTA | FIFO status (HCLK domain)                              |
 | 0x10              | Register | MP3DEC_INTTH0  | input FIFO interrupt threshold                         |
 | 0x14              | Register | MP3DEC_INTTH1  | output FIFO interrupt threshold                        |
 | 0x18              | Register | MP3DEC_INTSTA  | interrupt status                                       |
@@ -63,10 +63,10 @@ It used FIFO IP from Vivado 2019.1 .
 
 #### MP3DEC_FIFOCNT
 
-| Bit   | R/W  | Description                                 |
-| ----- | ---- | ------------------------------------------- |
-| 31:16 | R    | input FIFO data count(in AHB clock domain)  |
-| 15:0  | R    | output FIFO data count(in AHB clock domain) |
+| Bit   | R/W  | Description                         |
+| ----- | ---- | ----------------------------------- |
+| 31:16 | R    | input FIFO data count(HCLK domain)  |
+| 15:0  | R    | output FIFO data count(HCLK domain) |
 
 #### MP3DEC_FIFOSTA
 
