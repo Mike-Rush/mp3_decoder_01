@@ -13,8 +13,13 @@ You can use Adobe Audition to listen to the PCM file(16bit,2 Channels,Big-Endian
 
 ## Some thing  about AHB Wrapper
 
+### Structure
+
+
+
 ### REG Map
 
 
 
 ### Programer's Model
+
