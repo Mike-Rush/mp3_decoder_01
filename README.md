@@ -23,14 +23,15 @@ It used FIFO IP from Vivado 2019.1 .
 
 | Address Partition | Type     | Register Name  | Description                                            |
 | ----------------- | -------- | -------------- | ------------------------------------------------------ |
-| 0x00              | Register | MP3DEC_RST     | module reset(low active)                               |
-| 0x04              | Register | MP3DEC_FIFOCNT | FIFO data count (in AHB clock domain)                  |
-| 0x08              | Register | MP3DEC_FIFOSTA | FIFO status (In AHB clock domain)                      |
-| 0x0C              | Register | MP3DEC_INTTH0  | input FIFO interrupt threshold                         |
-| 0x10              | Register | MP3DEC_INTTH1  | output FIFO interrupt threshold                        |
-| 0x1C              | Register | MP3DEC_INTSTA  | interrupt status                                       |
-| 0x20              | Register | MP3DEC_INTCLR  | clear interrupt                                        |
-| 0x24              | Register | MP3DEC_INTMSK  | interrupt mask                                         |
+| 0x00              | Register | MP3DEC_EN      | mp3 decoder enable(high active)                        |
+| 0x04              | Register | MP3DEC_RST     | module reset(low active)                               |
+| 0x08              | Register | MP3DEC_FIFOCNT | FIFO data count (in AHB clock domain)                  |
+| 0x0C              | Register | MP3DEC_FIFOSTA | FIFO status (In AHB clock domain)                      |
+| 0x10              | Register | MP3DEC_INTTH0  | input FIFO interrupt threshold                         |
+| 0x14              | Register | MP3DEC_INTTH1  | output FIFO interrupt threshold                        |
+| 0x18              | Register | MP3DEC_INTSTA  | interrupt status                                       |
+| 0x1C              | Register | MP3DEC_INTCLR  | clear interrupt                                        |
+| 0x20              | Register | MP3DEC_INTMSK  | interrupt mask                                         |
 | 0x80              | Register | MP3DEC_FIFO    | write data to input FIFO or read data from output FIFO |
 
 ### Interrupt Definition
@@ -45,6 +46,13 @@ It used FIFO IP from Vivado 2019.1 .
 | INT_OFIFO_UDR | 0    | MP3DEC_FIFOSTA[0]==1 && still trying to read MP3DEC_FIFO  |
 
 ### Register Definition
+
+#### MP3DEC_EN
+
+| Bit  | R/W  | Description                     |
+| ---- | ---- | ------------------------------- |
+| 31:1 | -    | reserved                        |
+| 0    | RW   | mp3 decoder enable(high active) |
 
 #### MP3DEC_RST
 
