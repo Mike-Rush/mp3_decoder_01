@@ -19,6 +19,7 @@ reg [31:0] HADDR_t;
 reg [2:0] st,st_t;
 reg HWRITE_t,HREADYOUT_t,ahb_active_t;
 reg reg_MP3DEC_EN,MP3DEC_EN_t,MP3DEC_EN_CLK_DEC;
+reg reg_MP3DEC_RST;
 wire [31:0] reg_MP3DEC_FIFOCNT;
 wire ahb_active=HTRANS[1]&&HSEL&&HREADY;
 assign HRESP=1'b0;
@@ -36,7 +37,7 @@ always @(posedge HCLK) begin
 	ahb_active_t<=ahb_active;
 end
 mp3dec_fifo input_fifo(
-  .rst(MP3DEC_RST),
+  .rst(reg_MP3DEC_RST),
   .wr_clk(HCLK),
   .rd_clk(MP3DEC_CLK),
   .din(ififo_din),
@@ -52,8 +53,10 @@ mp3dec_fifo input_fifo(
   .wr_rst_busy(ififo_wrrst_busy),
   .rd_rst_busy(ififo_rdrst_busy)
 );
+assign ififo_wr_en=HADDR_t[7]&&HWRITE_t&&(!ififo_almost_full)&&(st_t==`S_NORMAL);
+assign ififo_din=HWDATA[31:0];
 mp3dec_fifo output_fifo(
-  .rst(MP3DEC_RST),
+  .rst(reg_MP3DEC_RST),
   .wr_clk(MP3DEC_CLK),
   .rd_clk(HCLK),
   .din(ofifo_din),
@@ -69,11 +72,10 @@ mp3dec_fifo output_fifo(
   .wr_rst_busy(ofifo_rdrst_busy),
   .rd_rst_busy(ofifo_wrrst_busy)
 );
-assign ififo_wr_en=HADDR_t[7]&&HWRITE_t&&(!ififo_almost_full)&&(st_t==`S_NORMAL);
-assign ififo_din=HWDATA[31:0];
+assign ofifo_rd_en=HADDR[7]&&(!HWRITE)&&(!ofifo_almost_empty)&&(st==`S_NORMAL);
 Mp3Decode Mp3Decode_u0(
 	.Clk           (MP3DEC_CLK),
-	.Rst           (MP3DEC_RST),
+	.Rst           (reg_MP3DEC_RST),
 	.Enable        (MP3DEC_EN_CLK_DEC),
 	.fifo_empty    (ififo_rdrst_busy||ififo_almost_empty),
 	.fifo_ren      (ififo_rd_en),
@@ -98,7 +100,7 @@ begin
 	if (!HRESETn) begin
 		st<=`S_NORMAL;
 		HREADYOUT<=1'b0;
-		MP3_DEC_RST<=1'b0;
+		reg_MP3DEC_RST<=1'b0;
 		cnt0<=0;
 	end else begin
 		case (st)
@@ -114,15 +116,26 @@ begin
 						HREADYOUT<=1'b1;
 						st<=`S_NORMAL;
 					end
-					endcase // HADDR[7:0]
+					endcase 
 				end else begin
 					case (HADDR[7:0])
-
+					`MP3DEC_EN:begin HRDATA_sm<={31'b0,reg_MP3DEC_EN};HREADYOUT<=1'b1;end
+					`MP3DEC_RST:begin HRDATA_sm<={31'b0,reg_MP3DEC_RST};HREADYOUT<=1'b1;end
+					`MP3DEC_FIFOCNT:begin HRDATA_sm<={6'b0,ififo_rd_dcnt,6'b0,ofifo_wr_dcnt};HREADYOUT<=1'b1;end
+					`MP3DEC_FIFOSTA:begin HRDATA_sm<={30'b0,ififo_almost_full,ofifo_almost_empty};end
+					`MP3DEC_INTTH0:begin end
+					
+					default:begin
+						HREADYOUT<=1'b1;
+						HRDATA_sm<=0;
+					end
+					endcase
+				end
 			end
 		end
 		`S_WR_MP3_DEC_RST_0:begin
 			HREADYOUT<=1'b0;
-			MP3_DEC_RST<=HWDATA[0];
+			reg_MP3DEC_RST<=HWDATA[0];
 			if (HWDATA[0]==1'b0) begin
 				cnt0<=0;
 				st<=`WR_MP3_DEC_RST_1;
