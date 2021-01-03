@@ -27,7 +27,8 @@ You can use Adobe Audition to listen to the PCM file(16bit,2 Channels,Big-Endian
 | 0x0C              | Register | MP3DEC_INTTH0  | input FIFO interrupt threshold                         |
 | 0x10              | Register | MP3DEC_INTTH1  | output FIFO interrupt threshold                        |
 | 0x1C              | Register | MP3DEC_INTSTA  | interrupt status                                       |
-| 0x20              | Register | MP3DEC_INTCLR  | interrupt clear                                        |
+| 0x20              | Register | MP3DEC_INTCLR  | clear interrupt                                        |
+| 0x24              | Register | MP3DEC_INTMSK  | interrupt mask                                         |
 | 0x80              | Register | MP3DEC_FIFO    | write data to input FIFO or read data from output FIFO |
 
 ### Interrupt Definition
@@ -81,10 +82,17 @@ You can use Adobe Audition to listen to the PCM file(16bit,2 Channels,Big-Endian
 
 #### MP3DEC_INTSTA
 
-| Bit  | R/W  | Description |
-| ---- | ---- | ----------- |
-| 31:6 | -    | reserved    |
-| 5:0  | R    |             |
+| Bit  | R/W  | Description      |
+| ---- | ---- | ---------------- |
+| 31:6 | -    | reserved         |
+| 5:0  | R    | interrupt status |
+
+#### MP3DEC_INTCLR
+
+| Bit  | R/W  | Description              |
+| ---- | ---- | ------------------------ |
+| 31:6 | -    | reserved                 |
+| 5:0  |      | write to clear interrupt |
 
 
 
