@@ -11,7 +11,7 @@ Output file=./sim/t01.pcm
 Sim Script=./sim/sim0.do or ./sim/sim0_nowave.do   
 You can use Adobe Audition to listen to the PCM file(16bit,2 Channels,Big-Endian)
 
-## Some thing about AHB Wrapper
+## Something about AHB Wrapper
 
 It used FIFO IP from Vivado 2019.1 .
 
