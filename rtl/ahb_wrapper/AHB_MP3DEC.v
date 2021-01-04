@@ -24,6 +24,7 @@ wire reg_module_rst;
 reg mp3dec_rst,mp3dec_rst_t,mp3dec_rst_clk_dec;
 reg [15:0] reg_IFIFO_LTH,reg_IFIFO_MTH;
 reg [15:0] reg_OFIFO_LTH,reg_OFIFO_MTH;
+reg [31:0] reg_MP3DEC_INTMSK
 wire ahb_active=HTRANS[1]&&HSEL&&HREADY;
 assign HRESP=1'b0;
 wire [31:0] ififo_din,ififo_dout;
@@ -129,12 +130,14 @@ begin
 					`MP3DEC_EN:begin HRDATA_sm<={31'b0,reg_MP3DEC_EN};HREADYOUT<=1'b1;end
 					`MP3DEC_RST:begin HRDATA_sm<={31'b0,reg_module_rst};HREADYOUT<=1'b1;end
 					`MP3DEC_FIFOCNT:begin HRDATA_sm<={6'b0,ififo_rd_dcnt,6'b0,ofifo_wr_dcnt};HREADYOUT<=1'b1;end
-					`MP3DEC_FIFOSTA:begin HRDATA_sm<={30'b0,ififo_almost_full,ofifo_almost_empty};end
-					`MP3DEC_INTTH0:begin end
-
+					`MP3DEC_FIFOSTA:begin HRDATA_sm<={30'b0,ififo_almost_full,ofifo_almost_empty};HREADYOUT<=1'b1;end
+					`MP3DEC_INTTH0:begin HRDATA_sm<={reg_IFIFO_MTH,reg_IFIFO_LTH};HREADYOUT<=1'b1;end
+					`MP3DEC_INTTH1:begin HRDATA_sm<={reg_OFIFO_MTH,reg_OFIFO_LTH};HREADYOUT<=1'b1;end
+					`MP3DEC_INTSTA:begin HRDATA_sm<={26'b0,intr[5:0]};HREADYOUT<=1'b1;end
+					`MP3DEC_INTMSK:begin HRDATA_sm<=reg_MP3DEC_INTMSK;HREADYOUT<=1'b1;end
 					default:begin
-						HREADYOUT<=1'b1;
 						HRDATA_sm<=0;
+						HREADYOUT<=1'b1;
 					end
 					endcase
 				end
@@ -167,6 +170,11 @@ begin
 		end
 		endcase
 	end
+end
+//gen HRDATA(comb logic)
+always @(*)
+begin
+
 end
 //1-cycle WR DATA
 always @(posedge HCLK or negedge HRESETn)
