@@ -41,7 +41,7 @@ It used FIFO IP from Vivado 2019.1 .
 | INT_IFIFO_MTH | 5    | MP3DEC_FIFOCNT[31:16]>MP3DEC_INTTH0[31:16]                |
 | INT_IFIFO_LTH | 4    | MP3DEC_FIFOCNT[31:16]<MP3DEC_INTTH0[15:0]                 |
 | INT_OFIFO_MTH | 3    | MP3DEC_FIFOCNT[15:0]>MP3DEC_INTTH0[31:16]                 |
-| INT_OFIFO_LTH | 2    | MP3DEC_FIFOCNT[15:0]<MP3DEC_INTTH0[31:16]                 |
+| INT_OFIFO_LTH | 2    | MP3DEC_FIFOCNT[15:0]<MP3DEC_INTTH0[15:0]                  |
 | INT_IFIFO_OVR | 1    | MP3DEC_FIFOSTA[1]==1 && still trying to write MP3DEC_FIFO |
 | INT_OFIFO_UDR | 0    | MP3DEC_FIFOSTA[0]==1 && still trying to read MP3DEC_FIFO  |
 
