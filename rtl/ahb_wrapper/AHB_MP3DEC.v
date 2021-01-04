@@ -1,3 +1,4 @@
+`include "./AHB_MP3DEC_defines.vh"
 module AHB_MP3DEC(
   input  wire          HCLK,      // system bus clock
   input  wire          HRESETn,   // system bus reset
@@ -38,7 +39,7 @@ assign HRESP=1'b0;
 always @(posedge HCLK) begin
 	st_t<=st;
 	HADDR_t<=HADDR;
-	HWRITE_t<=HWITE;
+	HWRITE_t<=HWRITE;
 	HREADYOUT_t<=HREADYOUT;
 	ahb_active_t<=ahb_active;
 end

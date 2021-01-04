@@ -1,0 +1,5 @@
+`define S_NORMAL 5'b10000
+`define S_WR_MP3_DEC_RST_0 5'b01000
+`define S_WR_MP3_DEC_RST_1 5'b00100
+`define S_WR_MP3_DEC_RST_2 5'b00010
+`define S_WR_MP3_DEC_RST_3 5'b00001

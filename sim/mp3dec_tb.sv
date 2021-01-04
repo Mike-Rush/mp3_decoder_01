@@ -41,7 +41,7 @@ initial begin
 	end
 end
 initial begin
-	fmp3=$fopen("./t01.mp3","rb");
+	fmp3=$fopen("./t02.mp3","rb");
 	$fseek(fmp3,0,2);
 	framecnt0=0;framecnt=0;
 	mp3_size=$ftell(fmp3);
@@ -58,7 +58,7 @@ initial begin
 	mem_ptr=0;fifo_datain=mp3memory[mem_ptr];
 	Wfull=1'b0;
 	#(`p_clk*2);
-	fpcm=$fopen("./t01.pcm","wb");
+	fpcm=$fopen("./t02.pcm","wb");
 	forever begin
 		@(posedge Clk)
 		if (Rst) begin

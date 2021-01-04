@@ -1,2 +1,19 @@
 `define RST1_CYCLE_NUM 10
 `define RST0_CYCLE_NUM 60
+//AHB reg
+`define MP3DEC_EN 			8'h00
+`define MP3DEC_RST			8'h04
+`define MP3DEC_FIFOCNT 		8'h08
+`define MP3DEC_FIFOSTA		8'h0C
+`define MP3DEC_INTTH0		8'h10
+`define MP3DEC_INTTH1		8'h14
+`define MP3DEC_INTSTA		8'h18
+`define MP3DEC_INTCLR		8'h1C
+`define MP3DEC_INTMSK		8'h20
+`define MP3DEC_FIFO 		8'h80
+//AHB FSM
+`define S_NORMAL 5'b10000
+`define S_WR_MP3_DEC_RST_0 5'b01000
+`define S_WR_MP3_DEC_RST_1 5'b00100
+`define S_WR_MP3_DEC_RST_2 5'b00010
+`define S_WR_MP3_DEC_RST_3 5'b00001
