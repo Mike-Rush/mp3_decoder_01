@@ -1,1 +1,2 @@
-`define RST_CYCLE_NUM 5
+`define RST1_CYCLE_NUM 10
+`define RST0_CYCLE_NUM 60
