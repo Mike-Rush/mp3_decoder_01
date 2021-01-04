@@ -17,7 +17,7 @@ module AHB_MP3DEC(
   output wire 		   mp3dec_intr
 	);
 reg [31:0] HADDR_t;
-reg [2:0] st,st_t;
+reg [4:0] st,st_t;
 reg HWRITE_t,HREADYOUT_t,ahb_active_t;
 reg reg_MP3DEC_EN,mp3dec_en_t,mp3dec_en_clk_dec;
 reg fifo_rst;
@@ -34,6 +34,9 @@ wire [9:0] ififo_rd_dcnt;
 wire [9:0] ofifo_wr_dcnt;
 wire ififo_wrrst_busy,ififo_rdrst_busy,ififo_almost_empty,ififo_rd_en,ififo_wr_en,ififo_almost_full;
 wire ofifo_wrrst_busy,ofifo_rdrst_busy,ofifo_almost_empty,ofifo_rd_en,ofifo_wr_en,ofifo_almost_full; 
+reg [9:0] cnt0;
+reg [5:0] intr;
+wire [5:0] intr_src;
 wire ahb_active=HTRANS[1]&&HSEL&&HREADY;
 assign HRESP=1'b0;
 always @(posedge HCLK) begin
@@ -46,7 +49,7 @@ end
 mp3dec_fifo input_fifo(
   .rst(fifo_rst),
   .wr_clk(HCLK),
-  .rd_clk(MP3DEC_CLK),
+  .rd_clk(mp3dec_clk),
   .din(ififo_din),
   .wr_en(ififo_wr_en),
   .rd_en(ififo_rd_en),
@@ -60,11 +63,11 @@ mp3dec_fifo input_fifo(
   .wr_rst_busy(ififo_wrrst_busy),
   .rd_rst_busy(ififo_rdrst_busy)
 );
-assign ififo_wr_en=HADDR_t[7]&&HWRITE_t&&(!ififo_almost_full)&&(st_t==`S_NORMAL);
+assign ififo_wr_en=HADDR_t[7]&&HWRITE_t&&(!ififo_almost_full)&&(!ififo_wrrst_busy)&&(!fifo_rst)&&(st_t==`S_NORMAL);
 assign ififo_din=HWDATA[31:0];
 mp3dec_fifo output_fifo(
   .rst(fifo_rst),
-  .wr_clk(MP3DEC_CLK),
+  .wr_clk(mp3dec_clk),
   .rd_clk(HCLK),
   .din(ofifo_din),
   .wr_en(ofifo_wr_en),
@@ -76,31 +79,31 @@ mp3dec_fifo output_fifo(
   .almost_empty(ofifo_almost_empty),
   .rd_data_count(),
   .wr_data_count(ofifo_wr_dcnt),
-  .wr_rst_busy(ofifo_rdrst_busy),
-  .rd_rst_busy(ofifo_wrrst_busy)
+  .wr_rst_busy(ofifo_wrrst_busy),
+  .rd_rst_busy(ofifo_rdrst_busy)
 );
-assign ofifo_rd_en=HADDR[7]&&(!HWRITE)&&(!ofifo_almost_empty)&&(st==`S_NORMAL);
+assign ofifo_rd_en=HADDR[7]&&(!HWRITE)&&(!ofifo_almost_empty)&&(!ofifo_rdrst_busy)&&(!fifo_rst)&&(st==`S_NORMAL);
 assign HRDATA_fifo=ofifo_dout;
 Mp3Decode Mp3Decode_u0(
 	.Clk           (mp3dec_clk),
 	.Rst           (mp3dec_rst_clk_dec),
 	.Enable        (mp3dec_en_clk_dec),
-	.fifo_empty    (ififo_rdrst_busy||ififo_almost_empty),
+	.fifo_empty    (ififo_rdrst_busy||ififo_almost_empty||fifo_rst),
 	.fifo_ren      (ififo_rd_en),
 	.fifo_datain   (ififo_dout),
 	.Music_mode    (),
 	.Sample_freq   (),
 	.Bitrate       (),
 	.Invalid_format(),
-	.Wfull         (ofifo_wrrst_busy||ofifo_almost_full),
+	.Wfull         (ofifo_wrrst_busy||ofifo_almost_full||fifo_rst),
 	.Winc          (ofifo_wr_en),
 	.Wdata         (ofifo_din)
 );
 //bit cross domain
-always @(mp3dec_clk)
+always @(posedge mp3dec_clk)
 begin
 	mp3dec_en_t<=reg_MP3DEC_EN;
-	mp3dec_en_clk_dec<=MP3DEC_EN_t;
+	mp3dec_en_clk_dec<=mp3dec_en_t;
 	mp3dec_rst_t<=mp3dec_rst;
 	mp3dec_rst_clk_dec<=mp3dec_rst_t;
 end
@@ -123,7 +126,7 @@ begin
 					case (HADDR[7:0])
 					`MP3DEC_RST:begin
 						HREADYOUT<=1'b0;
-						st<=S_WR_MP3_DEC_RST_0;
+						st<=`S_WR_MP3_DEC_RST_0;
 					end
 					default:begin
 						HREADYOUT<=1'b1;
@@ -161,17 +164,17 @@ begin
 		`S_WR_MP3_DEC_RST_1:begin
 			cnt0<=cnt0+1'b1;
 			if (cnt0==`RST1_CYCLE_NUM) begin st<=`S_NORMAL;HREADYOUT<=1'b1;end 
-			else begin st<=S_WR_MP3_DEC_RST_1;HREADYOUT<=1'b0;end
+			else begin st<=`S_WR_MP3_DEC_RST_1;HREADYOUT<=1'b0;end
 		end
 		`S_WR_MP3_DEC_RST_2:begin
 			cnt0<=cnt0+1'b1;
 			if (cnt0==`RST0_CYCLE_NUM) begin st<=`S_WR_MP3_DEC_RST_3;HREADYOUT<=1'b1;end 
-			else begin st<=S_WR_MP3_DEC_RST_2;HREADYOUT<=1'b0;end
+			else begin st<=`S_WR_MP3_DEC_RST_2;HREADYOUT<=1'b0;end
 		end
 		`S_WR_MP3_DEC_RST_3:begin
 			mp3dec_rst<=1'b1;
 			if ((!ififo_wrrst_busy)&&(!ofifo_rdrst_busy)) begin st<=`S_NORMAL;HREADYOUT<=1'b1;end 
-			else begin st<=S_WR_MP3_DEC_RST_3;HREADYOUT<=1'b0;end
+			else begin st<=`S_WR_MP3_DEC_RST_3;HREADYOUT<=1'b0;end
 		end
 		endcase
 	end
@@ -192,7 +195,7 @@ begin
 	end else begin
 		if ((!HADDR_t[7])&&HWRITE_t&&ahb_active_t&&(st==`S_NORMAL)) begin
 			case (HADDR_t[7:0])
-			`MP3_DECEN:begin reg_MP3DEC_EN<=HWDATA[0];end
+			`MP3DEC_EN:begin reg_MP3DEC_EN<=HWDATA[0];end
 			`MP3DEC_INTTH0:begin reg_IFIFO_MTH<=HWDATA[31:16];reg_IFIFO_LTH<=HWDATA[15:0];end
 			`MP3DEC_INTTH1:begin reg_OFIFO_MTH<=HWDATA[31:16];reg_OFIFO_LTH<=HWDATA[15:0];end
 			`MP3DEC_INTMSK:begin reg_MP3DEC_INTMSK<=HWDATA; end
@@ -233,14 +236,14 @@ scd #(.dw(1)) scd_ififo_ovr(
 	.clk(HCLK),
 	.s  (HADDR_t[7]&&HWRITE_t&&(ififo_almost_full)&&(st_t==`S_NORMAL)),
 	.pv (1'b0),
-	.nv (1'b1)
+	.nv (1'b1),
 	.sc (intr_src[1])
 	);
 scd #(.dw(1)) scd_ofifo_udr(
 	.clk(HCLK),
 	.s  (HADDR[7]&&(!HWRITE)&&(ofifo_almost_empty)&&(st==`S_NORMAL)),
 	.pv (1'b0),
-	.nv (1'b1)
+	.nv (1'b1),
 	.sc (intr_src[0])
 	);
 //intr control
@@ -253,13 +256,13 @@ generate
 			if (!HRESETn) intr[i]<=0;
 			else begin
 				if (intr_src[i]&&(!reg_MP3DEC_INTMSK[i])) intr[i]<=1;
-				else if ((!HADDR_t[7]&&HWRITE_t&(st==`S_NORMAL)&&ahb_active_t&&(HADDR_t[7:0]==`MP3DEC_INTCLR) && HWDATA[i])
+				else if ((!HADDR_t[7])&&HWRITE_t&(st==`S_NORMAL)&&ahb_active_t&&(HADDR_t[7:0]==`MP3DEC_INTCLR) && HWDATA[i])
 				begin
 					intr[i]<=0;
 				end else intr[i]<=intr[i];
 			end
 		end
 	end
-end
+endgenerate
 assign mp3_intr=intr[0] || intr[1] || intr[2] || intr[3] || intr[4] || intr[5];
 endmodule

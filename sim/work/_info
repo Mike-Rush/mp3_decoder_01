@@ -9,7 +9,7 @@ z2
 cModel Technology
 Z0 de:/mp3_decoder_verilog/sim
 vAlais
-Z1 !s110 1609732048
+Z1 !s110 1609759563
 !i10b 1
 !s100 GkkbQWY`Nf`O6nB73D0Th1
 I2jHV?ioJUn]5f[lN0YGfT0
@@ -23,7 +23,7 @@ Z3 OL;L;10.6e;65
 r1
 !s85 0
 31
-Z4 !s108 1609732048.000000
+Z4 !s108 1609759563.000000
 !s107 ..\rtl\timescale.v|../rtl/write_i2s_fifo.v|../rtl/timescale.v|../rtl/synchronize.v|../rtl/Stereo.v|../rtl/requatize.v|../rtl/Ram.v|../rtl/Multiplier.v|../rtl/mp3_rom.v|../rtl/Mp3Decoder.v|../rtl/Memorysel.v|../rtl/Imdct.v|../rtl/huffmandecoder.v|../rtl/Filterbank.v|../rtl/Controll.v|../rtl/Alais.v|./mp3dec_tb.sv|
 Z5 !s90 -reportprogress|300|-f|list.txt|
 !i113 1

@@ -1,4 +1,4 @@
-`define RST1_CYCLE_NUM 10
+`define RST1_CYCLE_NUM 20
 `define RST0_CYCLE_NUM 60
 //AHB reg
 `define MP3DEC_EN 			8'h00
