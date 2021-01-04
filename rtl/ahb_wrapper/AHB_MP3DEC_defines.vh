@@ -1,2 +1,13 @@
 `define RST1_CYCLE_NUM 10
 `define RST0_CYCLE_NUM 60
+//AHB FSM
+`define MP3DEC_EN 			8'h00
+`define MP3DEC_RST			8'h04
+`define MP3DEC_FIFOCNT 		8'h08
+`define MP3DEC_FIFOSTA		8'h0C
+`define MP3DEC_INTTH0		8'h10
+`define MP3DEC_INTTH1		8'h14
+`define MP3DEC_INTSTA		8'h18
+`define MP3DEC_INTCLR		8'h1C
+`define MP3DEC_INTMSK		8'h20
+`define MP3DEC_FIFO 		8'h80
