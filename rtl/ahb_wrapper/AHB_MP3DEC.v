@@ -24,15 +24,17 @@ wire reg_module_rst;
 reg mp3dec_rst,mp3dec_rst_t,mp3dec_rst_clk_dec;
 reg [15:0] reg_IFIFO_LTH,reg_IFIFO_MTH;
 reg [15:0] reg_OFIFO_LTH,reg_OFIFO_MTH;
-reg [31:0] reg_MP3DEC_INTMSK
-wire ahb_active=HTRANS[1]&&HSEL&&HREADY;
-assign HRESP=1'b0;
+reg [31:0] reg_MP3DEC_INTMSK;
+reg [31:0] HRDATA_sm;
+wire [31:0] HRDATA_fifo;
 wire [31:0] ififo_din,ififo_dout;
 wire [31:0] ofifo_din,ofifo_dout;
 wire [9:0] ififo_rd_dcnt;
 wire [9:0] ofifo_wr_dcnt;
 wire ififo_wrrst_busy,ififo_rdrst_busy,ififo_almost_empty,ififo_rd_en,ififo_wr_en,ififo_almost_full;
 wire ofifo_wrrst_busy,ofifo_rdrst_busy,ofifo_almost_empty,ofifo_rd_en,ofifo_wr_en,ofifo_almost_full; 
+wire ahb_active=HTRANS[1]&&HSEL&&HREADY;
+assign HRESP=1'b0;
 always @(posedge HCLK) begin
 	st_t<=st;
 	HADDR_t<=HADDR;
@@ -77,6 +79,7 @@ mp3dec_fifo output_fifo(
   .rd_rst_busy(ofifo_wrrst_busy)
 );
 assign ofifo_rd_en=HADDR[7]&&(!HWRITE)&&(!ofifo_almost_empty)&&(st==`S_NORMAL);
+assign HRDATA_fifo=ofifo_dout;
 Mp3Decode Mp3Decode_u0(
 	.Clk           (mp3dec_clk),
 	.Rst           (mp3dec_rst_clk_dec),
@@ -110,6 +113,7 @@ begin
 		fifo_rst<=1'b1;
 		cnt0<=0;
 		mp3dec_rst<=0;
+		HRDATA_sm<=0;
 	end else begin
 		case (st)
 		`S_NORMAL:begin
@@ -174,7 +178,8 @@ end
 //gen HRDATA(comb logic)
 always @(*)
 begin
-
+	if ((HADDR_t[7]) && (!HWRITE_t) && (st==`S_NORMAL) && ahb_active_t) HRDATA<=HRDATA_fifo;
+	else HRDATA<=HRDATA_sm;
 end
 //1-cycle WR DATA
 always @(posedge HCLK or negedge HRESETn)
@@ -194,6 +199,28 @@ begin
 		end
 	end
 end
+//intr control
+scd #(.dw(10)) scd_ififo_mth(
+	.clk(HCLK),
+	.s  (ififo_rd_dcnt),
+	.pv (reg_IFIFO_MTH),
+	.nv (reg_IFIFO_MTH+1'b1),
+	.sc (intr_src[5])
+	);
+scd #(.dw(10)) scd_ififo_lth(
+	.clk(HCLK),
+	.s  (ififo_rd_dcnt),
+	.pv (reg_IFIFO_LTH),
+	.nv (reg_IFIFO_LTH-1'b1),
+	.sc (intr_src[4])
+	);
+scd #(.dw(10)) scd_ofifo_mth(
+	.clk(HCLK),
+	.s  (ofifo_wr_dcnt),
+	.pv (reg_IFIFO_LTH),
+	.nv (reg_IFIFO_LTH-1'b1),
+	.sc (intr_src[5])
+	);
 genvar i;
 generate
 	for (i=0;i<6;i=i+1)
