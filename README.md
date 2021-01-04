@@ -88,7 +88,7 @@ It used FIFO IP from Vivado 2019.1 .
 | Bit   | R/W  | Description                                                  |
 | ----- | ---- | ------------------------------------------------------------ |
 | 31:16 | RW   | INT_OFIFO_MTH will be triggered if MP3DEC_FIFOCNT[15:0]>MP3DEC_INTTH1[31:16] |
-| 15:0  | RW   | INT_OFIFO_LTH will be triggered if MP3DEC_FIFOCNT[15:0]>MP3DEC_INTTH1[31:16] |
+| 15:0  | RW   | INT_OFIFO_LTH will be triggered if MP3DEC_FIFOCNT[15:0]<MP3DEC_INTTH1[15:0] |
 
 #### MP3DEC_INTSTA
 
