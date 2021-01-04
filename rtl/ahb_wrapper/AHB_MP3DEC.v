@@ -1,3 +1,4 @@
+`include "./AHB_MP3DEC_defines.vh"
 module AHB_MP3DEC(
   input  wire          HCLK,      // system bus clock
   input  wire          HRESETn,   // system bus reset
