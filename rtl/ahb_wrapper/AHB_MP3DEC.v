@@ -217,9 +217,16 @@ scd #(.dw(10)) scd_ififo_lth(
 scd #(.dw(10)) scd_ofifo_mth(
 	.clk(HCLK),
 	.s  (ofifo_wr_dcnt),
-	.pv (reg_IFIFO_LTH),
-	.nv (reg_IFIFO_LTH-1'b1),
-	.sc (intr_src[5])
+	.pv (reg_OFIFO_MTH),
+	.nv (reg_OFIFO_MTH+1'b1),
+	.sc (intr_src[3])
+	);
+scd #(.dw(10)) scd_ofifo_lth(
+	.clk(HCLK),
+	.s  (ofifo_wr_dcnt),
+	.pv (reg_OFIFO_LTH),
+	.nv (reg_OFIFO_LTH-1'b1),
+	.sc (intr_src[2])
 	);
 genvar i;
 generate
