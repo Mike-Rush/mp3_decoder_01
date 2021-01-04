@@ -199,7 +199,7 @@ begin
 		end
 	end
 end
-//intr control
+//gen intr_src
 scd #(.dw(10)) scd_ififo_mth(
 	.clk(HCLK),
 	.s  (ififo_rd_dcnt),
@@ -228,6 +228,21 @@ scd #(.dw(10)) scd_ofifo_lth(
 	.nv (reg_OFIFO_LTH-1'b1),
 	.sc (intr_src[2])
 	);
+scd #(.dw(1)) scd_ififo_ovr(
+	.clk(HCLK),
+	.s  (HADDR_t[7]&&HWRITE_t&&(ififo_almost_full)&&(st_t==`S_NORMAL)),
+	.pv (1'b0),
+	.nv (1'b1)
+	.sc (intr_src[1])
+	);
+scd #(.dw(1)) scd_ofifo_udr(
+	.clk(HCLK),
+	.s  (HADDR[7]&&(!HWRITE)&&(ofifo_almost_empty)&&(st==`S_NORMAL)),
+	.pv (1'b0),
+	.nv (1'b1)
+	.sc (intr_src[0])
+	);
+//intr control
 genvar i;
 generate
 	for (i=0;i<6;i=i+1)
