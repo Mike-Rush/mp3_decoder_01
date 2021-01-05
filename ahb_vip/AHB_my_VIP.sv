@@ -19,8 +19,9 @@ assign HREADYOUT=1;
 assign HRDATA=0;
 reg HWRITE_t,HREADY_t,HSEL_t;
 reg [31:0] HADDR_t;
-bit [0:16'h400][7:0] fname;
+bit [7:0] fname[0:16'h400];
 bit [31:0] fname_len;
+string tmp;
 always @(posedge HCLK)
 begin
   HADDR_t<=HADDR;
@@ -44,7 +45,14 @@ begin
     fname_len=HWDATA;
   end else if (HADDR_t==32'h40000010&&HSEL_t&&HREADY_t&&HWRITE_t)
   begin
-    outf=$fopen(string'(fname[0:fname_len-1]),"w");
+    tmp="";
+    //for (int i=0;i<fname_len;i++) tmp.putc(i,fname[i]);
+    tmp=string'(fname);
+    outf=$fopen(tmp,"wb");
+    $write("opened file %s .\n",tmp);
+  end else if (HADDR_t==32'h40000014&&HSEL_t&&HREADY_t&&HWRITE_t)
+  begin
+    $fwrite(outf,"%c%c%c%c",HWDATA[31:24],HWDATA[23:16],HWDATA[15:8],HWDATA[7:0]);
   end
   else if (HADDR_t>=32'h40001000&&HADDR_t<=32'h40001400&&HSEL_t&&HREADY_t&&HWRITE_t)
   begin
