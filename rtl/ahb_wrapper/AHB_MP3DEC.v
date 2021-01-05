@@ -190,7 +190,7 @@ always @(posedge HCLK or negedge HRESETn)
 begin
 	if (!HRESETn) begin
 		reg_MP3DEC_EN<=0;
-		reg_MP3DEC_INTMSK<=0;
+		reg_MP3DEC_INTMSK<=32'hffff;
 		reg_IFIFO_MTH<=0;reg_IFIFO_LTH<=0;reg_OFIFO_MTH<=0;reg_OFIFO_LTH<=0;
 	end else begin
 		if ((!HADDR_t[7])&&HWRITE_t&&ahb_active_t&&(st==`S_NORMAL)) begin
@@ -264,5 +264,5 @@ generate
 		end
 	end
 endgenerate
-assign mp3_intr=intr[0] || intr[1] || intr[2] || intr[3] || intr[4] || intr[5];
+assign mp3dec_intr=intr[0] || intr[1] || intr[2] || intr[3] || intr[4] || intr[5];
 endmodule
