@@ -17,7 +17,7 @@ It used FIFO IP from Vivado 2019.1 .
 
 ### Structure
 
-
+![Alt text](https://github.com/Mike-Rush/mp3_decoder_01/blob/main/pic/structure.jpg)
 
 ### Address Map
 
