@@ -63,7 +63,7 @@ mp3dec_fifo input_fifo(
   .wr_rst_busy(ififo_wrrst_busy),
   .rd_rst_busy(ififo_rdrst_busy)
 );
-assign ififo_wr_en=HADDR_t[7]&&HWRITE_t&&(!ififo_almost_full)&&(!ififo_wrrst_busy)&&(!fifo_rst)&&(st_t==`S_NORMAL);
+assign ififo_wr_en=ahb_active_t&&HADDR_t[7]&&HWRITE_t&&(!ififo_almost_full)&&(!ififo_wrrst_busy)&&(!fifo_rst)&&(st_t==`S_NORMAL);
 assign ififo_din=HWDATA[31:0];
 mp3dec_fifo output_fifo(
   .rst(fifo_rst),
@@ -82,7 +82,7 @@ mp3dec_fifo output_fifo(
   .wr_rst_busy(ofifo_wrrst_busy),
   .rd_rst_busy(ofifo_rdrst_busy)
 );
-assign ofifo_rd_en=HADDR[7]&&(!HWRITE)&&(!ofifo_almost_empty)&&(!ofifo_rdrst_busy)&&(!fifo_rst)&&(st==`S_NORMAL);
+assign ofifo_rd_en=ahb_active&&HADDR[7]&&(!HWRITE)&&(!ofifo_almost_empty)&&(!ofifo_rdrst_busy)&&(!fifo_rst)&&(st==`S_NORMAL);
 assign HRDATA_fifo=ofifo_dout;
 Mp3Decode Mp3Decode_u0(
 	.Clk           (mp3dec_clk),
