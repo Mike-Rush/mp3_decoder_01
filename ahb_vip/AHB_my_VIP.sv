@@ -43,7 +43,11 @@ begin
   end else if (HADDR_t==32'h4000000C&&HSEL_t&&HREADY_t&&HWRITE_t)
   begin
     fname_len=HWDATA;
-  end else if (HADDR_t==32'h40000010&&HSEL_t&&HREADY_t&&HWRITE_t)
+  end else if (HADDR_t==32'h40000018&&HSEL_t&&HREADY_t&&HWRITE_t)
+  begin
+    $fclose(outf);
+  end
+  else if (HADDR_t==32'h40000010&&HSEL_t&&HREADY_t&&HWRITE_t)
   begin
     tmp="";
     //for (int i=0;i<fname_len;i++) tmp.putc(i,fname[i]);
